@@ -13,4 +13,4 @@ This blog contains reflection, articles, and project writeups that I have produc
 </ul>
 
 
-[Go back to home](cnscockburn.github.io)
+{% include footer.html %}

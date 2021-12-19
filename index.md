@@ -10,3 +10,6 @@ Hi! My name is Callum, and I'm a engineer and developer based in Bristol, UK. My
 
 
 ## [Blog](/pages/blog.md)
+
+
+{% include footer.html %}

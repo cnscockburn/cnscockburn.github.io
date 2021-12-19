@@ -9,4 +9,4 @@
   <p>{{ project.content | markdownify }}</p>
 {% endfor %}
 
-[Go back to home](cnscockburn.github.io)
+{% include footer.html %}
