@@ -2,4 +2,4 @@
 
 
 
-[Go back to home](cnscockburn.github.io)
+{% include footer.md %}
