@@ -1,9 +1,12 @@
 ## Callum Cockburn
 
-Hi! My name is Callum, and I'm a engineering and developer based in Bristol, UK. My background is Mechanical Engineering, but I enjoy learning new tools and skills of all different kinds. 
+Hi! My name is Callum, and I'm a engineer and developer based in Bristol, UK. My background is Mechanical Engineering, but I enjoy learning new tools and skills of all different kinds. 
 
-## Education
+## [Education](/pages/education.md)
 
-## Experience
+## [Experience](/pages/experience.md)
 
-## Projects
+## [Projects](/pages/projects.md)
+
+
+## [Blog](/pages/blog.md)
