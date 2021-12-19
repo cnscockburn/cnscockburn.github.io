@@ -8,3 +8,5 @@
   </h2>
   <p>{{ project.content | markdownify }}</p>
 {% endfor %}
+
+[Go back to home](index.md)
