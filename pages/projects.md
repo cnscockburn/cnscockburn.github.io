@@ -3,8 +3,8 @@
 {% for project in site.projects %}
   <h2>
     <a href="{{ project.url }}">
-      {{ project.title }} - {{ project.date }}
+      {{ project.title }} - {{ project.daterange }}
     </a>
   </h2>
-  <p>{{ staff_member.content | markdownify }}</p>
+  <p>{{ project.content | markdownify }}</p>
 {% endfor %}
