@@ -11,3 +11,6 @@ This blog contains reflection, articles, and project writeups that I have produc
     </li>
   {% endfor %}
 </ul>
+
+
+[Go back to home](cnscockburn.github.io)

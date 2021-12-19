@@ -9,4 +9,4 @@
   <p>{{ project.content | markdownify }}</p>
 {% endfor %}
 
-[Go back to home](index.md)
+[Go back to home](cnscockburn.github.io)
