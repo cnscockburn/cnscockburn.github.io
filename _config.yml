@@ -1,4 +1,4 @@
-theme: jekyll-theme-cayman
+remote-theme: daattali/beautiful-jekyll
 
 collections:
   projects:
