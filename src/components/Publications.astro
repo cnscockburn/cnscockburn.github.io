@@ -48,7 +48,7 @@ const orcid = "0009-0001-7442-8988";
                     "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200",
                 };
                 const badgeClass =
-                  typeColors[pub.type] ||
+                  typeColors[pub.type as keyof typeof typeColors] ||
                   "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
 
                 // Build IEEE citation

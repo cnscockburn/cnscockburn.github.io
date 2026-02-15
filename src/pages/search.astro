@@ -20,37 +20,46 @@ import { siteConfig } from "../config";
   </main>
 </BaseLayout>
 
-<script>
-  async function initPagefind() {
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+
+<script is:inline>
+  function initPagefind() {
     const container = document.getElementById("search");
     if (!container) return;
 
-    try {
-      // Load Pagefind CSS
+    // Load Pagefind CSS if not already loaded
+    if (!document.querySelector('link[href="/pagefind/pagefind-ui.css"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = "/pagefind/pagefind-ui.css";
       document.head.appendChild(link);
-
-      // @ts-ignore — Pagefind is injected at build time
-      const pagefind = await import("/pagefind/pagefind-ui.js");
-      new pagefind.PagefindUI({
-        element: "#search",
-        showSubResults: true,
-        showImages: false,
-      });
-    } catch (e) {
+    }
+    
+    // Check if PagefindUI is loaded
+    if (typeof PagefindUI === "undefined") {
       container.innerHTML = `
         <p class="text-gray-500 dark:text-gray-400 text-center py-12">
           Search is available after the site is built.<br/>
           <span class="text-sm">Run <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">npm run build</code> to generate the search index.</span>
         </p>
       `;
+      return;
     }
+
+    // Clear previous instance if any
+    container.innerHTML = "";
+    
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      showImages: false,
+    });
   }
 
-  // Init on load and after View Transitions
-  initPagefind();
+  // Init on load
+  window.addEventListener("load", initPagefind);
+  
+  // Init after View Transitions navigation
   document.addEventListener("astro:after-swap", initPagefind);
 </script>
 
