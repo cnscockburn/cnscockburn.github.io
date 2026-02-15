@@ -62,11 +62,8 @@ import { siteConfig } from "../config";
     });
   }
 
-  // Init on load
-  window.addEventListener("load", initPagefind);
-  
-  // Init after View Transitions navigation
-  document.addEventListener("astro:after-swap", initPagefind);
+  // Init on load and after navigation
+  document.addEventListener("astro:page-load", initPagefind);
 </script>
 
 <style is:global>
