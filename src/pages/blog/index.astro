@@ -89,54 +89,86 @@ const allTags = [
 </BaseLayout>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  function initBlogFilters() {
     const tagButtons = document.querySelectorAll(".tag-btn");
     const postCards = document.querySelectorAll("[data-tags]");
+    
+    // Check URL query param for initial tag
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTag = urlParams.get("tag") || "all";
 
-    tagButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const tag = btn.getAttribute("data-tag");
-
-        // Update active button
-        tagButtons.forEach((b) => {
-          b.classList.remove(
-            "active",
-            "bg-gray-900",
-            "text-white",
-            "dark:bg-gray-100",
-            "dark:text-gray-900"
-          );
-          b.classList.add(
-            "bg-gray-100",
-            "text-gray-700",
-            "dark:bg-gray-800",
-            "dark:text-gray-300"
-          );
-        });
-        btn.classList.add(
+    function filterPosts(tag) {
+      // Update active button state
+      tagButtons.forEach((b) => {
+        b.classList.remove(
           "active",
           "bg-gray-900",
           "text-white",
           "dark:bg-gray-100",
           "dark:text-gray-900"
         );
-        btn.classList.remove(
+        b.classList.add(
           "bg-gray-100",
           "text-gray-700",
           "dark:bg-gray-800",
           "dark:text-gray-300"
         );
+      });
 
-        // Filter posts
-        postCards.forEach((card) => {
-          const cardTags = card.getAttribute("data-tags")?.split(",") || [];
-          if (tag === "all" || cardTags.includes(tag)) {
-            (card as HTMLElement).style.display = "";
-          } else {
-            (card as HTMLElement).style.display = "none";
-          }
-        });
+      const activeBtn = document.querySelector(`.tag-btn[data-tag="${tag}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add(
+          "active",
+          "bg-gray-900",
+          "text-white",
+          "dark:bg-gray-100",
+          "dark:text-gray-900"
+        );
+        activeBtn.classList.remove(
+          "bg-gray-100",
+          "text-gray-700",
+          "dark:bg-gray-800",
+          "dark:text-gray-300"
+        );
+      }
+
+      // Filter cards
+      let hasResults = false;
+      postCards.forEach((card) => {
+        const checkCard = card as HTMLElement;
+        const cardTags = checkCard.getAttribute("data-tags")?.split(",") || [];
+        if (tag === "all" || cardTags.includes(tag)) {
+          checkCard.style.display = "";
+          hasResults = true;
+        } else {
+          checkCard.style.display = "none";
+        }
+      });
+
+      // Show/hide "No posts found" message if we had one (optional refinement)
+    }
+
+    // Initial filter
+    filterPosts(initialTag);
+
+    // Event listeners
+    tagButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tag = btn.getAttribute("data-tag") || "all";
+        filterPosts(tag);
+        
+        // Update URL without reload
+        const newUrl = new URL(window.location.href);
+        if (tag === "all") {
+          newUrl.searchParams.delete("tag");
+        } else {
+          newUrl.searchParams.set("tag", tag);
+        }
+        history.pushState(null, "", newUrl);
       });
     });
-  });
+  }
+
+  // Run on initial load and after View Transitions
+  document.addEventListener("astro:page-load", initBlogFilters);
 </script>

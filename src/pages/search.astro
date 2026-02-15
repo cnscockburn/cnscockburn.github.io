@@ -38,10 +38,16 @@ import { siteConfig } from "../config";
     // Check if PagefindUI is loaded
     if (typeof PagefindUI === "undefined") {
       container.innerHTML = `
-        <p class="text-gray-500 dark:text-gray-400 text-center py-12">
-          Search is available after the site is built.<br/>
-          <span class="text-sm">Run <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">npm run build</code> to generate the search index.</span>
-        </p>
+        <div class="text-center py-12">
+          <p class="text-gray-500 dark:text-gray-400 mb-4">
+            Search index not found.
+          </p>
+          <div class="bg-yellow-50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-4 py-3 rounded-lg inline-block text-left text-sm max-w-md mx-auto">
+            <p class="font-bold mb-1">Action Required:</p>
+            <p>Run this command in your terminal to generate the search index:</p>
+            <code class="block mt-2 bg-black/10 dark:bg-black/30 px-2 py-1.5 rounded font-mono">npx pagefind --site dist</code>
+          </div>
+        </div>
       `;
       return;
     }

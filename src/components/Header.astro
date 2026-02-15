@@ -181,6 +181,8 @@ const navItems: NavItem[] = [
 </div>
 
 <script>
+  // --- Global Logic (Runs once) ---
+
   // Desktop sticky header
   window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
@@ -199,15 +201,13 @@ const navItems: NavItem[] = [
     }
   });
 
-  // Mobile drawer
-  const menuToggle = document.getElementById("menu-toggle");
-  const drawerClose = document.getElementById("drawer-close");
-  const drawer = document.getElementById("mobile-drawer");
-  const backdrop = document.getElementById("drawer-backdrop");
-  const panel = document.getElementById("drawer-panel");
-  const drawerLinks = document.querySelectorAll(".drawer-link");
-
+  // Drawer functions (Dynamic DOM query)
   function openDrawer() {
+    const drawer = document.getElementById("mobile-drawer");
+    const backdrop = document.getElementById("drawer-backdrop");
+    const panel = document.getElementById("drawer-panel");
+    const menuToggle = document.getElementById("menu-toggle");
+
     drawer?.classList.remove("pointer-events-none");
     drawer?.setAttribute("aria-hidden", "false");
     backdrop?.classList.replace("bg-black/0", "bg-black/50");
@@ -217,6 +217,11 @@ const navItems: NavItem[] = [
   }
 
   function closeDrawer() {
+    const drawer = document.getElementById("mobile-drawer");
+    const backdrop = document.getElementById("drawer-backdrop");
+    const panel = document.getElementById("drawer-panel");
+    const menuToggle = document.getElementById("menu-toggle");
+
     backdrop?.classList.replace("bg-black/50", "bg-black/0");
     panel?.classList.replace("translate-x-0", "translate-x-full");
     menuToggle?.setAttribute("aria-expanded", "false");
@@ -227,17 +232,34 @@ const navItems: NavItem[] = [
     }, 300);
   }
 
-  menuToggle?.addEventListener("click", openDrawer);
-  drawerClose?.addEventListener("click", closeDrawer);
-  backdrop?.addEventListener("click", closeDrawer);
-  drawerLinks.forEach((link) =>
-    link.addEventListener("click", closeDrawer)
-  );
-
-  // Close on Escape
+  // Global Keydown (Runs once)
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDrawer();
+    if (e.key === "Escape") {
+      const drawer = document.getElementById("mobile-drawer");
+      if (drawer && drawer.getAttribute("aria-hidden") === "false") {
+        closeDrawer();
+      }
+    }
   });
+
+  // --- Per-Page Logic (Runs on nav) ---
+
+  function initMobileMenu() {
+    const menuToggle = document.getElementById("menu-toggle");
+    const drawerClose = document.getElementById("drawer-close");
+    const backdrop = document.getElementById("drawer-backdrop");
+    const drawerLinks = document.querySelectorAll(".drawer-link");
+
+    menuToggle?.addEventListener("click", openDrawer);
+    drawerClose?.addEventListener("click", closeDrawer);
+    backdrop?.addEventListener("click", closeDrawer);
+    drawerLinks.forEach((link) =>
+      link.addEventListener("click", closeDrawer)
+    );
+  }
+
+  // Run on initial load and after View Transitions
+  document.addEventListener("astro:page-load", initMobileMenu);
 </script>
 
 <style>
