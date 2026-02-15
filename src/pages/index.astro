@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ScrollReveal from "../components/ScrollReveal.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Projects from "../components/Projects.astro";
@@ -9,12 +10,20 @@ import Certifications from "../components/Certifications.astro";
 ---
 
 <BaseLayout>
-  <section>
-    <Hero />
+  <Hero />
+  <ScrollReveal>
     <About />
+  </ScrollReveal>
+  <ScrollReveal>
     <Projects />
+  </ScrollReveal>
+  <ScrollReveal>
     <Experience />
+  </ScrollReveal>
+  <ScrollReveal>
     <Education />
+  </ScrollReveal>
+  <ScrollReveal>
     <Certifications />
-  </section>
+  </ScrollReveal>
 </BaseLayout>

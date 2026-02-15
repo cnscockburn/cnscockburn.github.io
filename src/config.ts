@@ -24,6 +24,19 @@ export const siteConfig = {
     "Healthcare Technology",
     "Risk Management",
   ],
+  projects: [
+    {
+      name: "AI Assurance Capability",
+      description:
+        "Leading the development of Synoptix's AI Assurance capability — a structured approach to evaluating, validating, and assuring AI systems for safety, ethics, and performance. Encompasses responsible AI frameworks, risk assessment methodologies, and governance tooling.",
+      skills: [
+        "Responsible AI",
+        "AI Governance",
+        "Risk Assessment",
+        "Assurance Frameworks",
+      ],
+    },
+  ],
   experience: [
     {
       company: "Synoptix",

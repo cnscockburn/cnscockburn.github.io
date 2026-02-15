@@ -11,78 +11,56 @@ const hasCertifications =
 // Detect if we're on the home page
 const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "";
 const homePrefix = isHome ? "" : "/";
+const currentPath = Astro.url.pathname;
+
+interface NavItem {
+  label: string;
+  href: string;
+  isPage?: boolean;
+}
+
+const navItems: NavItem[] = [
+  { label: "About", href: `${homePrefix}#about` },
+  ...(hasProjects
+    ? [{ label: "Projects", href: `${homePrefix}#projects` }]
+    : []),
+  ...(hasExperience
+    ? [{ label: "Experience", href: `${homePrefix}#experience` }]
+    : []),
+  ...(hasEducation
+    ? [{ label: "Education", href: `${homePrefix}#education` }]
+    : []),
+  ...(hasCertifications
+    ? [{ label: "Certifications", href: `${homePrefix}#certifications` }]
+    : []),
+  { label: "Blog", href: "/blog/", isPage: true },
+];
 ---
 
+<!-- Desktop Header -->
 <header
   id="header"
   class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
 >
   <nav class="max-w-7xl mx-auto px-8 py-4">
     <ul class="flex items-center gap-8 justify-center">
-      <li>
-        <a
-          href={`${homePrefix}#about`}
-          class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
-        >
-          About
-        </a>
-      </li>
       {
-        hasProjects && (
+        navItems.map((item) => (
           <li>
             <a
-              href={`${homePrefix}#projects`}
+              href={item.href}
               class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
+              aria-current={
+                item.isPage && currentPath.startsWith(item.href)
+                  ? "page"
+                  : undefined
+              }
             >
-              Projects
+              {item.label}
             </a>
           </li>
-        )
+        ))
       }
-      {
-        hasExperience && (
-          <li>
-            <a
-              href={`${homePrefix}#experience`}
-              class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
-            >
-              Experience
-            </a>
-          </li>
-        )
-      }
-      {
-        hasEducation && (
-          <li>
-            <a
-              href={`${homePrefix}#education`}
-              class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
-            >
-              Education
-            </a>
-          </li>
-        )
-      }
-      {
-        hasCertifications && (
-          <li>
-            <a
-              href={`${homePrefix}#certifications`}
-              class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
-            >
-              Certifications
-            </a>
-          </li>
-        )
-      }
-      <li>
-        <a
-          href="/blog/"
-          class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
-        >
-          Blog
-        </a>
-      </li>
       <li>
         <ThemeToggle />
       </li>
@@ -90,7 +68,114 @@ const homePrefix = isHome ? "" : "/";
   </nav>
 </header>
 
+<!-- Mobile Header -->
+<header
+  class="fixed top-0 left-0 right-0 z-50 md:hidden transition-all duration-300 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm"
+  id="mobile-header"
+>
+  <div class="flex items-center justify-between px-4 py-3">
+    <a
+      href="/"
+      class="text-lg font-bold text-gray-900 dark:text-gray-100"
+    >
+      {siteConfig.name.split(" ")[0]}
+    </a>
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+      <button
+        id="menu-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        class="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer -->
+<div
+  id="mobile-drawer"
+  class="fixed inset-0 z-[100] pointer-events-none"
+  aria-hidden="true"
+>
+  <!-- Backdrop -->
+  <div
+    id="drawer-backdrop"
+    class="absolute inset-0 bg-black/0 transition-all duration-300"
+  >
+  </div>
+
+  <!-- Drawer Panel -->
+  <nav
+    id="drawer-panel"
+    class="absolute top-0 right-0 h-full w-72 max-w-[80vw] bg-white dark:bg-gray-950 shadow-2xl translate-x-full transition-transform duration-300 ease-out flex flex-col"
+    aria-label="Mobile navigation"
+  >
+    <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+      <span class="text-lg font-bold text-gray-900 dark:text-gray-100">
+        Menu
+      </span>
+      <button
+        id="drawer-close"
+        aria-label="Close navigation menu"
+        class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6L6 18M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="flex-1 overflow-y-auto py-4">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="drawer-link block px-6 py-3 text-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+              aria-current={
+                item.isPage && currentPath.startsWith(item.href)
+                  ? "page"
+                  : undefined
+              }
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div
+      class="p-4 border-t border-gray-200 dark:border-gray-800 text-sm text-gray-500 dark:text-gray-400"
+    >
+      © {new Date().getFullYear()} {siteConfig.name}
+    </div>
+  </nav>
+</div>
+
 <script>
+  // Desktop sticky header
   window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
     if (window.scrollY > 100) {
@@ -107,10 +192,54 @@ const homePrefix = isHome ? "" : "/";
       );
     }
   });
+
+  // Mobile drawer
+  const menuToggle = document.getElementById("menu-toggle");
+  const drawerClose = document.getElementById("drawer-close");
+  const drawer = document.getElementById("mobile-drawer");
+  const backdrop = document.getElementById("drawer-backdrop");
+  const panel = document.getElementById("drawer-panel");
+  const drawerLinks = document.querySelectorAll(".drawer-link");
+
+  function openDrawer() {
+    drawer?.classList.remove("pointer-events-none");
+    drawer?.setAttribute("aria-hidden", "false");
+    backdrop?.classList.replace("bg-black/0", "bg-black/50");
+    panel?.classList.replace("translate-x-full", "translate-x-0");
+    menuToggle?.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeDrawer() {
+    backdrop?.classList.replace("bg-black/50", "bg-black/0");
+    panel?.classList.replace("translate-x-0", "translate-x-full");
+    menuToggle?.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    setTimeout(() => {
+      drawer?.classList.add("pointer-events-none");
+      drawer?.setAttribute("aria-hidden", "true");
+    }, 300);
+  }
+
+  menuToggle?.addEventListener("click", openDrawer);
+  drawerClose?.addEventListener("click", closeDrawer);
+  backdrop?.addEventListener("click", closeDrawer);
+  drawerLinks.forEach((link) =>
+    link.addEventListener("click", closeDrawer)
+  );
+
+  // Close on Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
+  });
 </script>
 
 <style>
   html {
     scroll-behavior: smooth;
+  }
+
+  [aria-current="page"] {
+    font-weight: 700;
   }
 </style>
