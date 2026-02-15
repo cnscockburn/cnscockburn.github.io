@@ -1,0 +1,61 @@
+---
+// BackToTop.astro
+---
+
+<button
+  id="back-to-top"
+  aria-label="Back to top"
+  class="fixed bottom-8 right-8 z-40 p-3 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent)]"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+  </svg>
+</button>
+
+<script>
+  function initBackToTop() {
+    const backToTopBtn = document.getElementById("back-to-top");
+
+    function toggleBackToTop() {
+      if (window.scrollY > 300) {
+        backToTopBtn?.classList.remove("opacity-0", "translate-y-10", "pointer-events-none");
+        backToTopBtn?.classList.add("opacity-100", "translate-y-0");
+      } else {
+        backToTopBtn?.classList.add("opacity-0", "translate-y-10", "pointer-events-none");
+        backToTopBtn?.classList.remove("opacity-100", "translate-y-0");
+      }
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+
+    // Initial check
+    toggleBackToTop();
+
+    // Event listeners
+    window.addEventListener("scroll", toggleBackToTop);
+    backToTopBtn?.addEventListener("click", scrollToTop);
+
+    // Cleanup function for View Transitions (optional but good practice)
+    document.addEventListener("astro:before-swap", () => {
+      window.removeEventListener("scroll", toggleBackToTop);
+    }, { once: true });
+  }
+
+  // Initialize on load and after navigation
+  document.addEventListener("astro:page-load", initBackToTop);
+</script>

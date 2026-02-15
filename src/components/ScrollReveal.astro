@@ -29,19 +29,31 @@ const { delay = 0, class: className = "" } = Astro.props;
 </style>
 
 <script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-  );
+  let observer;
 
-  document.querySelectorAll(".scroll-reveal").forEach((el) => {
-    observer.observe(el);
+  function initScrollReveal() {
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    document.querySelectorAll(".scroll-reveal").forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  // Initialize on load and after navigation
+  document.addEventListener("astro:page-load", initScrollReveal);
+
+  // disconnect observer before swap to prevent leaks (though mostly harmless here)
+  document.addEventListener("astro:before-swap", () => {
+    if (observer) observer.disconnect();
   });
 </script>
