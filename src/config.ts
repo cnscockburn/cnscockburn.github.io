@@ -122,4 +122,37 @@ export const siteConfig = {
         "Certification in AI management systems and responsible AI governance practices.",
     },
   ],
+  publications: [
+    {
+      title:
+        "Left Shifting Analysis of Human-Autonomous Team Interactions to Analyse Risks of Autonomy in High-Stakes AI Systems",
+      type: "Paper",
+      venue: "arXiv Preprint",
+      date: "December 2025",
+      authors: ["B. Larwood", "O. J. Sutton", "C. Cockburn"],
+      doi: "10.48550/arXiv.2512.03519",
+      link: "https://arxiv.org/abs/2512.03519",
+      description:
+        "A framework for early characterisation of risks emerging from human-autonomy teaming in operational contexts, enabling left-shifted analysis of AI failure modes in high-stakes systems.",
+    },
+    {
+      title: "MBSE Co-Pilot: A Research Roadmap",
+      type: "Paper",
+      venue: "Systems Engineering (INCOSE / Wiley)",
+      date: "September 2025",
+      authors: [
+        "W. Zhang",
+        "C. Cockburn",
+        "M. Henshaw",
+        "P. Douglas",
+        "P. Palmer",
+        "J. Olivier-Myall",
+        "S. Ji",
+      ],
+      doi: "10.1002/sys.70011",
+      link: "https://incose.onlinelibrary.wiley.com/doi/10.1002/sys.70011",
+      description:
+        "A research roadmap exploring the integration of AI co-pilot capabilities into Model-Based Systems Engineering workflows.",
+    },
+  ],
 };

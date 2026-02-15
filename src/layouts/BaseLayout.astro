@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { ViewTransitions } from "astro:transitions";
 import { siteConfig } from "../config";
 import "../styles/global.css";
 
@@ -40,6 +41,7 @@ const pageDescription = description || siteConfig.description;
       rel="stylesheet"
     />
     <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} — Blog`} href="/rss.xml" />
+    <ViewTransitions />
     <title>{pageTitle}</title>
 
     <script is:inline>
@@ -53,6 +55,24 @@ const pageDescription = description || siteConfig.description;
         document.documentElement.classList.add("dark");
       }
     </script>
+
+    <script is:inline>
+      // Re-apply dark mode after View Transitions swap
+      document.addEventListener("astro:after-swap", () => {
+        if (
+          localStorage.getItem("theme") === "dark" ||
+          (!localStorage.getItem("theme") &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.remove("light");
+          document.documentElement.classList.add("dark");
+        }
+      });
+    </script>
+
+    <!-- Analytics: uncomment one of the following when ready -->
+    <!-- Plausible: <script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script> -->
+    <!-- Umami: <script defer src="https://your-umami.com/script.js" data-website-id="your-id"></script> -->
   </head>
   <body
     class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"

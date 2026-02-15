@@ -6,8 +6,6 @@ tags: ["General"]
 draft: false
 ---
 
-# Welcome to the Blog
-
 Thanks for stopping by! I've set up this space to share thoughts, insights, and reflections on the topics I'm most passionate about.
 
 ## What to Expect

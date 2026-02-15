@@ -1,0 +1,197 @@
+---
+import { siteConfig } from "../config";
+const hasPublications =
+  siteConfig.publications && siteConfig.publications.length > 0;
+const orcid = "0009-0001-7442-8988";
+---
+
+{
+  hasPublications && (
+    <section id="publications" class="p-8 sm:p-12 md:p-16 lg:p-24">
+      <div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <div class="lg:col-span-4">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 dark:text-gray-100">
+              Publications
+            </h2>
+            <div
+              class="w-[75px] h-[5px] mt-2 rounded-full"
+              style={`background-color: ${siteConfig.accentColor}`}
+            />
+            <a
+              href={`https://orcid.org/${orcid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 mt-4 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M128 0C57.3 0 0 57.3 0 128s57.3 128 128 128 128-57.3 128-128S198.7 0 128 0z" fill="#A6CE39"/>
+                <path d="M86.3 186.2H70.9V79.1h15.4v107.1zM78.6 56.6c-5.7 0-10.3 4.6-10.3 10.3s4.6 10.3 10.3 10.3 10.3-4.6 10.3-10.3-4.6-10.3-10.3-10.3z" fill="#fff"/>
+                <path d="M108.9 79.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.6-56.8 53.6h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7 0-21.5-13.7-39.7-43.7-39.7h-23.7v79.4z" fill="#fff"/>
+              </svg>
+              ORCID
+            </a>
+          </div>
+
+          <div class="lg:col-span-8">
+            <div class="space-y-6">
+              {siteConfig.publications.map((pub) => {
+                const typeColors: Record<string, string> = {
+                  Paper:
+                    "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+                  Talk: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+                  Panel:
+                    "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
+                  Workshop:
+                    "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+                  Poster:
+                    "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200",
+                };
+                const badgeClass =
+                  typeColors[pub.type] ||
+                  "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
+
+                // Build IEEE citation
+                const authorsStr = pub.authors ? pub.authors.join(", ") : "";
+                const year = pub.date ? pub.date.split(" ").pop() : "";
+                const ieeeRef = `${authorsStr}, "${pub.title}," ${pub.venue}, ${pub.date}.${pub.doi ? ` doi: ${pub.doi}.` : ""}`;
+
+                return (
+                  <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 p-4 sm:p-5 md:p-6">
+                    {/* Header: badge + date */}
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                      <span
+                        class={`px-2 py-0.5 rounded text-xs font-medium ${badgeClass}`}
+                      >
+                        {pub.type}
+                      </span>
+                      {pub.date && (
+                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                          {pub.date}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                      {pub.title}
+                    </h3>
+
+                    {/* Authors */}
+                    {pub.authors && pub.authors.length > 0 && (
+                      <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        {pub.authors.join(", ")}
+                      </p>
+                    )}
+
+                    {/* Venue */}
+                    {pub.venue && (
+                      <p
+                        class="text-sm sm:text-base font-medium mb-2"
+                        style={`color: ${siteConfig.accentColor}`}
+                      >
+                        {pub.venue}
+                      </p>
+                    )}
+
+                    {/* Description */}
+                    {pub.description && (
+                      <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4">
+                        {pub.description}
+                      </p>
+                    )}
+
+                    {/* Action buttons */}
+                    <div class="flex flex-wrap items-center gap-3">
+                      {/* DOI link */}
+                      {pub.doi && (
+                        <a
+                          href={`https://doi.org/${pub.doi}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                        >
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                          </svg>
+                          DOI
+                        </a>
+                      )}
+
+                      {/* View paper */}
+                      {pub.link && (
+                        <a
+                          href={pub.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-white rounded-lg text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity"
+                          style={`background-color: ${siteConfig.accentColor}`}
+                        >
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                          </svg>
+                          View Paper
+                        </a>
+                      )}
+
+                      {/* Cite (IEEE) */}
+                      <button
+                        class="cite-btn inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                        data-citation={ieeeRef}
+                        data-filename={`${pub.doi ? pub.doi.replace(/\//g, "_") : pub.title.slice(0, 30)}.txt`}
+                        aria-label={`Download IEEE citation for ${pub.title}`}
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                          <path d="M10 9H8" />
+                          <path d="M16 13H8" />
+                          <path d="M16 17H8" />
+                        </svg>
+                        Cite (IEEE)
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  function initCiteButtons() {
+    document.querySelectorAll(".cite-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const citation = (btn as HTMLElement).dataset.citation || "";
+        const filename = (btn as HTMLElement).dataset.filename || "citation.txt";
+
+        const blob = new Blob([citation], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Visual feedback
+        const original = btn.innerHTML;
+        btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
+        setTimeout(() => {
+          btn.innerHTML = original;
+        }, 2000);
+      });
+    });
+  }
+
+  initCiteButtons();
+  document.addEventListener("astro:after-swap", initCiteButtons);
+</script>

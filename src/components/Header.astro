@@ -7,6 +7,8 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 const hasCertifications =
   siteConfig.certifications && siteConfig.certifications.length > 0;
+const hasPublications =
+  siteConfig.publications && siteConfig.publications.length > 0;
 
 // Detect if we're on the home page
 const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "";
@@ -33,7 +35,11 @@ const navItems: NavItem[] = [
   ...(hasCertifications
     ? [{ label: "Certifications", href: `${homePrefix}#certifications` }]
     : []),
+  ...(hasPublications
+    ? [{ label: "Publications", href: `${homePrefix}#publications` }]
+    : []),
   { label: "Blog", href: "/blog/", isPage: true },
+  { label: "Search", href: "/search/", isPage: true },
 ];
 ---
 
