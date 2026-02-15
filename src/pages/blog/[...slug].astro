@@ -11,6 +11,8 @@ export async function getStaticPaths() {
   const sorted = posts.sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
+  
+  return sorted.map((post, index) => {
     const relatedPosts = sorted
       .filter((p) => p.id !== post.id)
       .filter((p) =>
