@@ -23,8 +23,8 @@ We focused on the practical integration: how do you get an AI to help derive req
 
 * **For the "Cautionary" View:** *[On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922) (Bender et al., 2021).*
   I always go back to this when I feel too optimistic. It’s a necessary reminder that LLMs are probabilistic, not logical. It challenges us to think hard about whether we can ever fully trust an AI to handle the rigid logic required in systems engineering.
-* **For the "Foundational" View:** *[Requirements Engineering in the Age of AI](https://www.google.com/search?q=https://scholar.google.com/scholar%3Fq%3Drequirements%2Bengineering%2Blarge%2Blanguage%2Bmodels%2Bsurvey) (Recent Surveys).*
-  There has been a lot of work recently (like the surveys coming out of the IEEE software conferences) on using NLP for requirements traceability. Our roadmap builds on this—taking that text-based capability and forcing it into the structured world of MBSE.
+* **For the "Foundational" View:** *[Large Language Model for Requirements Engineering: A Systematic Literature Review](https://doi.org/10.21203/rs.3.rs-5589929/v1?urlappend=%3Futm_source%3Dresearchgate.net%26utm_medium%3Darticle) (Khan et al., 2024).*
+  There has been a lot of work recently (like this survey) on using NLP for requirements traceability. Our roadmap builds on this—taking that text-based capability and forcing it into the structured world of MBSE.
 
 ## 2. The Brake Check: Left-Shifting Human-Autonomy Risk
 
