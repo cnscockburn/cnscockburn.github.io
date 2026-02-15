@@ -22,6 +22,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { label: "Home", href: "/" },
   { label: "About", href: `${homePrefix}#about` },
   ...(hasProjects
     ? [{ label: "Projects", href: `${homePrefix}#projects` }]
@@ -55,14 +56,21 @@ const navItems: NavItem[] = [
           <li>
             <a
               href={item.href}
-              class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium"
+              class={`text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium flex items-center ${item.label === "Home" || item.label === "Search" ? "p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full" : ""}`}
+              aria-label={item.label}
               aria-current={
                 item.isPage && currentPath.startsWith(item.href)
                   ? "page"
                   : undefined
               }
             >
-              {item.label}
+              {item.label === "Home" ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              ) : item.label === "Search" ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              ) : (
+                item.label
+              )}
             </a>
           </li>
         ))
