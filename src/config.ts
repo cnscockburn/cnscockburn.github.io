@@ -93,4 +93,20 @@ export const siteConfig = {
       achievements: [],
     },
   ],
+  certifications: [
+    {
+      name: "Incorporated Engineer (IEng)",
+      issuer: "Engineering Council",
+      year: "",
+      description:
+        "Professional engineering registration demonstrating competence in applying proven engineering techniques.",
+    },
+    {
+      name: "AI Management Practitioner",
+      issuer: "",
+      year: "",
+      description:
+        "Certification in AI management systems and responsible AI governance practices.",
+    },
+  ],
 };

@@ -1,0 +1,142 @@
+---
+import BlogCard from "../../components/BlogCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { siteConfig } from "../../config";
+
+const allPosts = await getCollection("blog", ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+});
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Collect all unique tags
+const allTags = [
+  ...new Set(sortedPosts.flatMap((post) => post.data.tags)),
+].sort();
+---
+
+<BaseLayout
+  title="Blog"
+  description="Thoughts on AI, innovation, engineering, and technology."
+>
+  <main class="pt-24 sm:pt-32 pb-16 px-6 sm:px-12 md:px-16 lg:px-24">
+    <div class="max-w-4xl mx-auto">
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-100"
+      >
+        Blog
+      </h1>
+      <div
+        class="w-[75px] h-[5px] mt-2 rounded-full"
+        style={`background-color: ${siteConfig.accentColor}`}
+      >
+      </div>
+      <p
+        class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl"
+      >
+        Thoughts on AI, innovation, engineering, and technology.
+      </p>
+
+      <!-- Tag Filter -->
+      {
+        allTags.length > 1 && (
+          <div class="mt-8 flex flex-wrap gap-2" id="tag-filters">
+            <button
+              class="tag-btn active px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
+              data-tag="all"
+            >
+              All
+            </button>
+            {allTags.map((tag) => (
+              <button
+                class="tag-btn px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                data-tag={tag}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )
+      }
+
+      <!-- Posts Grid -->
+      <div class="mt-10 space-y-6" id="posts-grid">
+        {
+          sortedPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tags={post.data.tags}
+              slug={post.id}
+              draft={post.data.draft}
+            />
+          ))
+        }
+      </div>
+
+      {
+        sortedPosts.length === 0 && (
+          <p class="mt-10 text-gray-500 dark:text-gray-400 text-lg">
+            No posts yet — check back soon!
+          </p>
+        )
+      }
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tagButtons = document.querySelectorAll(".tag-btn");
+    const postCards = document.querySelectorAll("[data-tags]");
+
+    tagButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tag = btn.getAttribute("data-tag");
+
+        // Update active button
+        tagButtons.forEach((b) => {
+          b.classList.remove(
+            "active",
+            "bg-gray-900",
+            "text-white",
+            "dark:bg-gray-100",
+            "dark:text-gray-900"
+          );
+          b.classList.add(
+            "bg-gray-100",
+            "text-gray-700",
+            "dark:bg-gray-800",
+            "dark:text-gray-300"
+          );
+        });
+        btn.classList.add(
+          "active",
+          "bg-gray-900",
+          "text-white",
+          "dark:bg-gray-100",
+          "dark:text-gray-900"
+        );
+        btn.classList.remove(
+          "bg-gray-100",
+          "text-gray-700",
+          "dark:bg-gray-800",
+          "dark:text-gray-300"
+        );
+
+        // Filter posts
+        postCards.forEach((card) => {
+          const cardTags = card.getAttribute("data-tags")?.split(",") || [];
+          if (tag === "all" || cardTags.includes(tag)) {
+            (card as HTMLElement).style.display = "";
+          } else {
+            (card as HTMLElement).style.display = "none";
+          }
+        });
+      });
+    });
+  });
+</script>
