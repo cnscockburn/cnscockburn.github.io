@@ -1,0 +1,92 @@
+---
+import { getCollection } from "astro:content";
+import { siteConfig } from "../config";
+
+const posts = await getCollection("blog", ({ data }) => {
+  return import.meta.env.PROD ? data.draft !== true : true;
+});
+
+const latestPosts = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+{
+  latestPosts.length > 0 && (
+    <section id="blog" class="p-8 sm:p-12 md:p-16 lg:p-24">
+      <div>
+        <div class="flex items-end justify-between mb-8 sm:mb-10">
+          <div>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900 dark:text-gray-100">
+              Blog
+            </h2>
+            <div
+              class="w-[75px] h-[5px] mt-2 rounded-full"
+              style={`background-color: ${siteConfig.accentColor}`}
+            />
+          </div>
+          <a
+            href="/blog/"
+            class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[var(--accent)]"
+            style={`--accent: ${siteConfig.accentColor}; color: ${siteConfig.accentColor}`}
+          >
+            View all posts
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {latestPosts.map((post) => (
+            <a
+              href={`/blog/${post.id}/`}
+              class="group relative block rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-hidden transition-all duration-300 hover:bg-white dark:hover:bg-gray-800 hover:shadow-xl hover:border-gray-300 dark:hover:border-gray-700 hover:-translate-y-1"
+            >
+              {post.data.image && (
+                <img
+                  src={post.data.image}
+                  alt=""
+                  class="w-full h-36 sm:h-44 object-cover"
+                  loading="lazy"
+                />
+              )}
+              <div class="p-5 sm:p-6">
+                <time
+                  datetime={post.data.pubDate.toISOString()}
+                  class="text-xs text-gray-500 dark:text-gray-400"
+                >
+                  {post.data.pubDate.toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </time>
+                <h3 class="mt-2 text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-[var(--accent)] transition-colors line-clamp-2" style={`--accent: ${siteConfig.accentColor}`}>
+                  {post.data.title}
+                </h3>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                  {post.data.description}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Mobile "View all" link -->
+        <div class="mt-6 text-center sm:hidden">
+          <a
+            href="/blog/"
+            class="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
+            style={`color: ${siteConfig.accentColor}`}
+          >
+            View all posts
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" /><path d="M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
