@@ -4,6 +4,7 @@ description: "Why the more advanced an automated system becomes, the more crucia
 pubDate: 2026-02-15
 tags: ["AI", "Human Factors", "Automation", "Systems Engineering"]
 draft: false
+image: "/blog/paradox-of-control-cover.svg"
 ---
 
 In 1983, Lisanne Bainbridge published a paper titled ["Ironies of Automation"](https://doi.org/10.1016/0005-1098(83)90046-8). Writing in the era of nuclear power plants and industrial digitalization, she made a counterintuitive argument: **the more advanced an automated system becomes, the more crucial—and difficult—the role of the human operator becomes.**

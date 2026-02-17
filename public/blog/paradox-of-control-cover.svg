@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="50%" stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <pattern id="circuit" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+      <circle cx="40" cy="40" r="2" fill="rgba(255,255,255,0.08)"/>
+      <path d="M 40 0 L 40 38 M 42 40 L 80 40 M 40 42 L 40 80 M 0 40 L 38 40" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#circuit)"/>
+  <!-- Robot / Human icons -->
+  <circle cx="400" cy="300" r="60" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <circle cx="800" cy="300" r="60" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <line x1="460" y1="300" x2="740" y2="300" stroke="rgba(99,246,228,0.2)" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="400" y="310" font-family="monospace" font-size="36" fill="rgba(255,255,255,0.15)" text-anchor="middle">AI</text>
+  <text x="800" y="310" font-family="monospace" font-size="28" fill="rgba(255,255,255,0.15)" text-anchor="middle">Human</text>
+  <text x="80" y="540" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.3)">The Paradox of Control</text>
+</svg>

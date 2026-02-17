@@ -11,8 +11,8 @@ interface Props {
 
 const { headings } = Astro.props;
 
-// Only show h2 and h3 headings
-const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+// Include h2, h3, and h4 headings to cover all common blog post structures
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 ---
 
 {
@@ -24,8 +24,10 @@ const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     >
       <button
         id="toc-toggle"
+        type="button"
         class="w-full flex items-center justify-between px-5 py-3 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
         aria-expanded="false"
+        aria-controls="toc-list"
       >
         <span class="flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -55,71 +57,96 @@ const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
         id="toc-list"
         class="hidden border-t border-gray-200 dark:border-gray-800 px-5 py-3 space-y-1"
       >
-        {tocHeadings.map((heading) => (
-          <li>
-            <a
-              href={`#${heading.slug}`}
-              class={`toc-link block py-1 text-sm transition-colors duration-200 hover:text-gray-900 dark:hover:text-gray-100 ${
-                heading.depth === 3
-                  ? "pl-4 text-gray-500 dark:text-gray-500"
-                  : "text-gray-600 dark:text-gray-400 font-medium"
-              }`}
-              data-heading={heading.slug}
-            >
-              {heading.text}
-            </a>
-          </li>
-        ))}
+        {tocHeadings.map((heading) => {
+          const indent = heading.depth === 2 ? "" : heading.depth === 3 ? "pl-4" : "pl-8";
+          const style = heading.depth === 2
+            ? "text-gray-600 dark:text-gray-400 font-medium"
+            : "text-gray-500 dark:text-gray-500";
+          return (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                class={`toc-link block py-1 text-sm transition-colors duration-200 hover:text-gray-900 dark:hover:text-gray-100 ${indent} ${style}`}
+                data-heading={heading.slug}
+              >
+                {heading.text}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   )
 }
 
-<script>
-  function initToc() {
-    const toggle = document.getElementById("toc-toggle");
-    const list = document.getElementById("toc-list");
-    const chevron = document.getElementById("toc-chevron");
+<script is:inline>
+  (function() {
+    function initToc() {
+      var toggle = document.getElementById("toc-toggle");
+      var list = document.getElementById("toc-list");
+      var chevron = document.getElementById("toc-chevron");
 
-    if (!toggle || !list) return;
+      if (!toggle || !list) return;
 
-    toggle.addEventListener("click", () => {
-      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
-      toggle.setAttribute("aria-expanded", String(!isExpanded));
-      list.classList.toggle("hidden");
-      chevron?.classList.toggle("rotate-180");
-    });
+      // Remove old listener if it exists (for View Transitions)
+      if (toggle._tocHandler) {
+        toggle.removeEventListener("click", toggle._tocHandler);
+      }
 
-    // Active heading highlighting
-    const tocLinks = document.querySelectorAll(".toc-link") as NodeListOf<HTMLAnchorElement>;
-    if (tocLinks.length === 0) return;
+      toggle._tocHandler = function() {
+        var isExpanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!isExpanded));
+        list.classList.toggle("hidden");
+        if (chevron) chevron.classList.toggle("rotate-180");
+      };
 
-    const headingElements = Array.from(tocLinks)
-      .map((link) => {
-        const id = link.getAttribute("data-heading");
-        return id ? document.getElementById(id) : null;
-      })
-      .filter(Boolean) as HTMLElement[];
+      toggle.addEventListener("click", toggle._tocHandler);
 
-    function updateActive() {
-      let current = "";
-      for (const heading of headingElements) {
-        const rect = heading.getBoundingClientRect();
-        if (rect.top <= 120) {
-          current = heading.id;
+      // Active heading highlighting
+      var tocLinks = document.querySelectorAll(".toc-link");
+      if (tocLinks.length === 0) return;
+
+      var headingElements = [];
+      for (var i = 0; i < tocLinks.length; i++) {
+        var id = tocLinks[i].getAttribute("data-heading");
+        var el = id ? document.getElementById(id) : null;
+        if (el) headingElements.push(el);
+      }
+
+      function updateActive() {
+        var current = "";
+        for (var i = 0; i < headingElements.length; i++) {
+          var rect = headingElements[i].getBoundingClientRect();
+          if (rect.top <= 120) {
+            current = headingElements[i].id;
+          }
+        }
+        for (var j = 0; j < tocLinks.length; j++) {
+          var isActive = tocLinks[j].getAttribute("data-heading") === current;
+          if (isActive) {
+            tocLinks[j].style.color = "";
+            tocLinks[j].style.fontWeight = "700";
+            tocLinks[j].classList.add("!text-gray-900", "dark:!text-gray-100");
+          } else {
+            tocLinks[j].style.fontWeight = "";
+            tocLinks[j].classList.remove("!text-gray-900", "dark:!text-gray-100");
+          }
         }
       }
-      tocLinks.forEach((link) => {
-        const isActive = link.getAttribute("data-heading") === current;
-        link.classList.toggle("!text-gray-900", isActive);
-        link.classList.toggle("dark:!text-gray-100", isActive);
-        link.classList.toggle("!font-semibold", isActive);
-      });
+
+      if (window._tocScrollHandler) {
+        window.removeEventListener("scroll", window._tocScrollHandler);
+      }
+      window._tocScrollHandler = updateActive;
+      window.addEventListener("scroll", updateActive, { passive: true });
+      updateActive();
     }
 
-    window.addEventListener("scroll", updateActive, { passive: true });
-    updateActive();
-  }
-
-  document.addEventListener("astro:page-load", initToc);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initToc);
+    } else {
+      initToc();
+    }
+    document.addEventListener("astro:page-load", initToc);
+  })();
 </script>
