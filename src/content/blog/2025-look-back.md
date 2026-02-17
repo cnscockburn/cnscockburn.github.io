@@ -4,6 +4,8 @@ description: "Reflecting on the tension between AI acceleration in MBSE and the 
 pubDate: 2026-02-15
 tags: ["Systems Engineering", "MBSE", "AI", "Human Factors", "Research"]
 image: "/blog/2025-look-back-cover.svg"
+series: "AI & Human Systems"
+seriesOrder: 1
 ---
 
 2025 was a bit of a whirlwind year for the research. Looking back at the last few months, two specific pieces of work stand out to me—not just because they took a lot of coffee to get over the line, but because they represent the two tensions I’m constantly wrestling with: how do we build complex systems faster, and how do we make sure they don’t break when humans actually have to use them?

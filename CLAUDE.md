@@ -61,6 +61,7 @@ Build is handled via GitHub Actions CI/CD pipeline — no need to test builds lo
 | `TableOfContents.astro` | Collapsible ToC for blog posts with active section highlighting |
 | `ReadingProgress.astro` | Thin accent progress bar fixed at top of viewport on blog posts |
 | `ContactCTA.astro` | "Let's connect" CTA section with LinkedIn/email buttons |
+| `SeriesBanner.astro` | Blog series navigation banner with numbered posts and prev/next |
 
 ### Content Collections
 
@@ -73,6 +74,8 @@ pubDate: date       # required
 tags: string[]      # optional, defaults to []
 draft: boolean      # optional, defaults to false (filtered out in production)
 image: string       # optional, cover image URL (shown on card + post page + OG)
+series: string      # optional, series name for grouping posts
+seriesOrder: number  # optional, order within the series
 ```
 
 ### Configuration (`src/config.ts`)

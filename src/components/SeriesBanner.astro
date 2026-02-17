@@ -1,0 +1,104 @@
+---
+import { siteConfig } from "../config";
+
+interface SeriesPost {
+  id: string;
+  title: string;
+  order: number;
+}
+
+interface Props {
+  seriesName: string;
+  seriesPosts: SeriesPost[];
+  currentPostId: string;
+}
+
+const { seriesName, seriesPosts, currentPostId } = Astro.props;
+
+// Sort by series order
+const sorted = [...seriesPosts].sort((a, b) => a.order - b.order);
+const currentIndex = sorted.findIndex((p) => p.id === currentPostId);
+const prevPost = currentIndex > 0 ? sorted[currentIndex - 1] : null;
+const nextPost = currentIndex < sorted.length - 1 ? sorted[currentIndex + 1] : null;
+---
+
+<div
+  class="mb-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-hidden"
+>
+  {/* Series header */}
+  <div class="px-5 py-3 border-b border-gray-200 dark:border-gray-800">
+    <div class="flex items-center gap-2 text-sm">
+      <svg class="w-4 h-4 flex-shrink-0" style={`color: ${siteConfig.accentColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5v-15a2.5 2.5 0 0 1 2.5 -2.5h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a2.5 2.5 0 0 0 -2.5 2.5" />
+        <path d="M4 19.5a2.5 2.5 0 0 1 2.5 -2.5h11a2 2 0 0 0 2 -2v-12" />
+      </svg>
+      <span class="font-semibold text-gray-900 dark:text-gray-100">
+        Series: {seriesName}
+      </span>
+      <span class="text-gray-500 dark:text-gray-500">
+        — Part {currentIndex + 1} of {sorted.length}
+      </span>
+    </div>
+  </div>
+
+  {/* Series posts list */}
+  <ul class="px-5 py-3 space-y-1">
+    {sorted.map((post, i) => {
+      const isCurrent = post.id === currentPostId;
+      return (
+        <li class="flex items-center gap-2 text-sm">
+          <span
+            class={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+              isCurrent
+                ? "text-white"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+            }`}
+            style={isCurrent ? `background-color: ${siteConfig.accentColor}` : ""}
+          >
+            {i + 1}
+          </span>
+          {isCurrent ? (
+            <span class="font-medium text-gray-900 dark:text-gray-100">
+              {post.title}
+            </span>
+          ) : (
+            <a
+              href={`/blog/${post.id}/`}
+              class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+            >
+              {post.title}
+            </a>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+
+  {/* Prev / Next navigation */}
+  {(prevPost || nextPost) && (
+    <div class="px-5 py-3 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between gap-4">
+      {prevPost ? (
+        <a
+          href={`/blog/${prevPost.id}/`}
+          class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Previous
+        </a>
+      ) : <span />}
+      {nextPost ? (
+        <a
+          href={`/blog/${nextPost.id}/`}
+          class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+        >
+          Next
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </a>
+      ) : <span />}
+    </div>
+  )}
+</div>

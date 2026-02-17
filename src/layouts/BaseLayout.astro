@@ -112,6 +112,39 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://cnscockburn.github.io
       document.addEventListener("astro:page-load", addCopyButtons);
     </script>
     <ViewTransitions />
+
+    <style is:global>
+      /* Custom View Transition animations */
+      @keyframes fade-in {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fade-out {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-8px); }
+      }
+
+      ::view-transition-old(main-content) {
+        animation: fade-out 0.15s ease-in forwards;
+      }
+      ::view-transition-new(main-content) {
+        animation: fade-in 0.25s ease-out forwards;
+      }
+
+      /* Header stays persistent — no animation */
+      ::view-transition-old(site-header),
+      ::view-transition-new(site-header) {
+        animation: none;
+      }
+
+      /* Footer fades subtly */
+      ::view-transition-old(site-footer) {
+        animation: fade-out 0.1s ease-in forwards;
+      }
+      ::view-transition-new(site-footer) {
+        animation: fade-in 0.2s 0.1s ease-out forwards;
+      }
+    </style>
     <title>{pageTitle}</title>
 
     <script is:inline>
@@ -155,7 +188,7 @@ const ogImageURL = new URL(ogImage, Astro.site || 'https://cnscockburn.github.io
       Skip to main content
     </a>
     <Header />
-    <main id="main-content">
+    <main id="main-content" transition:name="main-content" transition:animate="none">
       <slot />
     </main>
     <Footer />
