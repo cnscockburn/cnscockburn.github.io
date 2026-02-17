@@ -3,6 +3,8 @@ import { siteConfig } from "../config";
 
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
+const hasVolunteering =
+  siteConfig.volunteering && siteConfig.volunteering.length > 0;
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 const hasCertifications =
   siteConfig.certifications && siteConfig.certifications.length > 0;
@@ -171,6 +173,16 @@ const hasPublications =
                 class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
               >
                 Experience
+              </a>
+            )
+          }
+          {
+            hasVolunteering && (
+              <a
+                href="/#volunteering"
+                class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+              >
+                Volunteering
               </a>
             )
           }

@@ -4,6 +4,8 @@ import ThemeToggle from "./ThemeToggle.astro";
 
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
+const hasVolunteering =
+  siteConfig.volunteering && siteConfig.volunteering.length > 0;
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 const hasCertifications =
   siteConfig.certifications && siteConfig.certifications.length > 0;
@@ -29,6 +31,9 @@ const navItems: NavItem[] = [
     : []),
   ...(hasExperience
     ? [{ label: "Experience", href: `${homePrefix}#experience` }]
+    : []),
+  ...(hasVolunteering
+    ? [{ label: "Volunteering", href: `${homePrefix}#volunteering` }]
     : []),
   ...(hasEducation
     ? [{ label: "Education", href: `${homePrefix}#education` }]
@@ -56,7 +61,7 @@ const navItems: NavItem[] = [
           <li>
             <a
               href={item.href}
-              class={`text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium flex items-center ${item.label === "Home" || item.label === "Search" ? "p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full" : ""}`}
+              class={`text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors font-medium flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 focus-visible:rounded ${item.label === "Home" || item.label === "Search" ? "p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full" : ""}`}
               aria-label={item.label}
               aria-current={
                 item.isPage && currentPath.startsWith(item.href)

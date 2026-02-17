@@ -89,21 +89,45 @@ export const siteConfig = {
   education: [
     {
       school: "University of Bristol",
-      degree: "Master of Science (MSc), Biomedical/Medical Engineering",
-      dateRange: "2021 - 2022",
-      achievements: [],
+      degree: "MSc Biomedical Engineering",
+      dateRange: "Sep 2021 - Sep 2022",
+      achievements: [
+        "Graduated with Distinction (overall mark: 78%).",
+        "Study in anatomical science, computational neuroscience, biomedical imaging, sensing technologies, bioinformatics, biomedical mathematical modelling, bio-inspired artificial intelligence, and biomechanics.",
+        "Thesis: \"The Design and Development of a Forced Oscillation Technique Lung Function Test\", in partnership with University Hospitals Bristol and Weston NHS Trust, Clinical Engineering Department (supervisor: Dr R. Scott, Director, Clinical Engineering UHBWT). Thesis mark: 77%.",
+      ],
     },
     {
       school: "University of Exeter",
-      degree: "Bachelor's Degree, Engineering",
-      dateRange: "2018 - 2021",
-      achievements: [],
+      degree: "BEng Mechanical Engineering",
+      dateRange: "Sep 2018 - Jul 2021",
+      achievements: [
+        "Graduated with 1st Class Honours (overall mark: 80%).",
+        "Study in complex dynamic simulation, computational fluid dynamics, advanced mechanical design, thermofluids and energy conversion, structural dynamics, management and management science, and control engineering.",
+        "Individual Project: \"Does use of a centraliser affect perioperative fracture strength for total hip replacement in an elderly population?\" (supervisor: Dr T. Holsgrove, Biomedical Engineering Research Group Exeter). Dissertation mark: 82%.",
+        "Awards: Dean El Mariesh Memorial Prize, College Commendation (college), College Commendation (university), Dean's Commendation (2nd Year), Dean's Commendation (1st Year).",
+      ],
+    },
+  ],
+  volunteering: [
+    {
+      organisation: "St John Ambulance",
+      role: "Community of Practice Lead — Volunteer Experience and Community Education",
+      dateRange: "Apr 2025 - Present",
+      bullets: [
+        "Provided national-level senior leadership and strategic decision-making as a Community of Practice Lead, guiding over 40 volunteer leaders on operational and governance matters.",
+        "Represented the function in high-importance organisational transformation projects, including development of a nationally planning framework adopted across the organisation.",
+        "Developed nationally delivered training programmes for clinical and non-clinical roles.",
+      ],
     },
     {
-      school: "The Downs School",
-      degree: "",
-      dateRange: "2015 - 2017",
-      achievements: [],
+      organisation: "St John Ambulance",
+      role: "Regional Training Lead — West",
+      dateRange: "Apr 2023 - Apr 2025",
+      bullets: [
+        "Led a team of 9 District Training Leads across the South West and West Midlands, providing functional leadership and line management in their roles.",
+        "Led national Process and Governance efforts across training and education, including developing a P&G system that was adopted across all volunteer training programmes.",
+      ],
     },
   ],
   certifications: [

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#042f2e"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <pattern id="grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <text x="80" y="260" font-family="monospace" font-size="64" font-weight="bold" fill="#ffffff">Callum Cockburn</text>
+  <text x="80" y="320" font-family="monospace" font-size="28" fill="#99f6e4">Technical Innovation Manager</text>
+  <text x="80" y="370" font-family="monospace" font-size="20" fill="rgba(255,255,255,0.5)">AI · Systems Engineering · Innovation</text>
+  <rect x="80" y="400" width="100" height="4" rx="2" fill="#14b8a6"/>
+  <text x="80" y="540" font-family="monospace" font-size="18" fill="rgba(255,255,255,0.35)">cnscockburn.github.io</text>
+</svg>
