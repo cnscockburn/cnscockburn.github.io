@@ -153,17 +153,6 @@ const readingTime = Math.max(1, Math.ceil(words / 200));
       <!-- Table of Contents -->
       <TableOfContents headings={headings} />
 
-      <!-- Series Banner -->
-      {
-        post.data.series && seriesPosts.length > 1 && (
-          <SeriesBanner
-            seriesName={post.data.series}
-            seriesPosts={seriesPosts}
-            currentPostId={post.id}
-          />
-        )
-      }
-
       <!-- Post Content -->
       <article
         class="prose prose-lg dark:prose-invert prose-gray max-w-none
@@ -177,6 +166,19 @@ const readingTime = Math.max(1, Math.ceil(words / 200));
       >
         <Content />
       </article>
+
+      <!-- Series Banner (after content) -->
+      {
+        post.data.series && seriesPosts.length > 1 && (
+          <div class="mt-12">
+            <SeriesBanner
+              seriesName={post.data.series}
+              seriesPosts={seriesPosts}
+              currentPostId={post.id}
+            />
+          </div>
+        )
+      }
 
       <!-- Prev / Next Navigation -->
       {
