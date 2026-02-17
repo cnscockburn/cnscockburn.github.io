@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+import ReadingProgress from "../../components/ReadingProgress.astro";
 import { getCollection, render } from "astro:content";
 import { siteConfig } from "../../config";
 
@@ -38,7 +40,7 @@ export async function getStaticPaths() {
 }
 
 const { post, prevPost, nextPost, relatedPosts } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 // Reading time calculation (body may not be available in all Astro versions)
 const bodyText = (post as any).body || "";
@@ -46,7 +48,8 @@ const words = bodyText.split(/\s+/).filter(Boolean).length;
 const readingTime = Math.max(1, Math.ceil(words / 200));
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image}>
+  <ReadingProgress />
   <!-- JSON-LD Schema (Article) -->
   <script type="application/ld+json" is:inline set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -121,7 +124,21 @@ const readingTime = Math.max(1, Math.ceil(words / 200));
             </div>
           )
         }
+        {/* Cover Image */}
+        {
+          post.data.image && (
+            <img
+              src={post.data.image}
+              alt={post.data.title}
+              class="w-full rounded-xl mt-8 shadow-lg"
+              loading="eager"
+            />
+          )
+        }
       </header>
+
+      <!-- Table of Contents -->
+      <TableOfContents headings={headings} />
 
       <!-- Post Content -->
       <article

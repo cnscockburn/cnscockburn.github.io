@@ -1,0 +1,57 @@
+---
+import { siteConfig } from "../config";
+---
+
+<section class="p-8 sm:p-12 md:p-16 lg:p-24">
+  <div class="max-w-4xl mx-auto">
+    <div
+      class="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 p-8 sm:p-10 md:p-12"
+    >
+      {/* Decorative accent bar */}
+      <div
+        class="absolute top-0 left-0 right-0 h-1"
+        style={`background-color: ${siteConfig.accentColor}`}
+      />
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Let's connect
+          </h2>
+          <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-lg">
+            Interested in AI assurance, systems engineering, or innovation?
+            I'd love to hear from you.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+          {siteConfig.social?.linkedin && (
+            <a
+              href={siteConfig.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-white transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
+              style={`background-color: ${siteConfig.accentColor}`}
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 11v5" /><path d="M8 8v.01" /><path d="M12 16v-5" /><path d="M16 16v-3a2 2 0 1 0 -4 0" /><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" />
+              </svg>
+              Connect on LinkedIn
+            </a>
+          )}
+          {siteConfig.social?.email && (
+            <a
+              href={`mailto:${siteConfig.social.email}`}
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-[1.02]"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" />
+              </svg>
+              Send an Email
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

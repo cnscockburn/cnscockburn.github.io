@@ -1,0 +1,125 @@
+---
+interface TocHeading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: TocHeading[];
+}
+
+const { headings } = Astro.props;
+
+// Only show h2 and h3 headings
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+  tocHeadings.length > 2 && (
+    <nav
+      id="table-of-contents"
+      class="mb-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-hidden"
+      aria-label="Table of Contents"
+    >
+      <button
+        id="toc-toggle"
+        class="w-full flex items-center justify-between px-5 py-3 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+        aria-expanded="false"
+      >
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6" />
+            <line x1="8" y1="12" x2="21" y2="12" />
+            <line x1="8" y1="18" x2="21" y2="18" />
+            <line x1="3" y1="6" x2="3.01" y2="6" />
+            <line x1="3" y1="12" x2="3.01" y2="12" />
+            <line x1="3" y1="18" x2="3.01" y2="18" />
+          </svg>
+          Table of Contents
+        </span>
+        <svg
+          id="toc-chevron"
+          class="w-4 h-4 transition-transform duration-200"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      <ul
+        id="toc-list"
+        class="hidden border-t border-gray-200 dark:border-gray-800 px-5 py-3 space-y-1"
+      >
+        {tocHeadings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class={`toc-link block py-1 text-sm transition-colors duration-200 hover:text-gray-900 dark:hover:text-gray-100 ${
+                heading.depth === 3
+                  ? "pl-4 text-gray-500 dark:text-gray-500"
+                  : "text-gray-600 dark:text-gray-400 font-medium"
+              }`}
+              data-heading={heading.slug}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<script>
+  function initToc() {
+    const toggle = document.getElementById("toc-toggle");
+    const list = document.getElementById("toc-list");
+    const chevron = document.getElementById("toc-chevron");
+
+    if (!toggle || !list) return;
+
+    toggle.addEventListener("click", () => {
+      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!isExpanded));
+      list.classList.toggle("hidden");
+      chevron?.classList.toggle("rotate-180");
+    });
+
+    // Active heading highlighting
+    const tocLinks = document.querySelectorAll(".toc-link") as NodeListOf<HTMLAnchorElement>;
+    if (tocLinks.length === 0) return;
+
+    const headingElements = Array.from(tocLinks)
+      .map((link) => {
+        const id = link.getAttribute("data-heading");
+        return id ? document.getElementById(id) : null;
+      })
+      .filter(Boolean) as HTMLElement[];
+
+    function updateActive() {
+      let current = "";
+      for (const heading of headingElements) {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= 120) {
+          current = heading.id;
+        }
+      }
+      tocLinks.forEach((link) => {
+        const isActive = link.getAttribute("data-heading") === current;
+        link.classList.toggle("!text-gray-900", isActive);
+        link.classList.toggle("dark:!text-gray-100", isActive);
+        link.classList.toggle("!font-semibold", isActive);
+      });
+    }
+
+    window.addEventListener("scroll", updateActive, { passive: true });
+    updateActive();
+  }
+
+  document.addEventListener("astro:page-load", initToc);
+</script>

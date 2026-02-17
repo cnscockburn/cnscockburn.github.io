@@ -1,0 +1,43 @@
+---
+import { siteConfig } from "../config";
+---
+
+<div
+  id="reading-progress-container"
+  class="fixed top-0 left-0 right-0 z-[60] h-[3px] pointer-events-none"
+>
+  <div
+    id="reading-progress-bar"
+    class="h-full w-0 transition-none"
+    style={`background-color: ${siteConfig.accentColor}`}
+  />
+</div>
+
+<script>
+  function initReadingProgress() {
+    const bar = document.getElementById("reading-progress-bar");
+    const container = document.getElementById("reading-progress-container");
+    if (!bar || !container) return;
+
+    // Only show on pages with article content
+    const article = document.querySelector("article");
+    if (!article) {
+      container.style.display = "none";
+      return;
+    }
+    container.style.display = "";
+
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      const progress = Math.min((scrollTop / docHeight) * 100, 100);
+      bar!.style.width = `${progress}%`;
+    }
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  document.addEventListener("astro:page-load", initReadingProgress);
+</script>
